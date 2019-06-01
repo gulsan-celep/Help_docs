@@ -1,0 +1,40 @@
+{% extends 'edit_base.html' %}
+<link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+{% block menu %}
+    {% load static %}
+    {% if perms.help_docs.view_new_Content %}
+    <button onclick="location.href='{% url 'new_Content' %}' " type="button"
+            class="btn btn-success pull-right"><i class="fa fa-plus"></i> İçerik Ekle
+    </button>
+    {% endif %}
+
+    <div class="col-md-12">
+    <table style="text-align: center;margin-top: 50px" id="dt_content" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th style="text-align: center"  class="th-lg">Üst Menü</th>
+            <th style="text-align: center; width: 200px;"  class="th-lg">Alt Menü</th>
+            <th style="text-align: center;"  class="th-lg">İçerik</th>
+            <th style="text-align: center;width: 200px" class="th-lg">İşlemler</th>
+        </tr>
+        </thead>
+    </table>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block scriptBlock %}
+        <script type="text/javascript" rel="script" src="{% static 'bootstrap/js/content_list.js' %}"></script>
+    <script type="text/javascript" rel="script" src="{% static 'bootstrap/js/new_content.js' %}"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+     $(document).ready(function () {
+         content_handler.init();
+     })
+    </script>
+{% endblock %}

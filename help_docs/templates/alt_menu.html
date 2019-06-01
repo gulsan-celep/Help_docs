@@ -1,0 +1,167 @@
+{% extends 'edit_base.html' %}
+{% load static %}
+<link href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+{% block menu %}
+    <div class="col-md-12">
+    <button id="alt_menu_save" data-toggle="modal" data-target="#alt_menu_Modal" type="button"
+            style="margin-bottom: 60px" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Alt Menü Ekle
+    </button>
+
+    </div>
+
+
+{#    <table class="table" id="alt_menu_table">#}
+{##}
+{#        <!--Table head-->#}
+{#        <thead>#}
+{#        <tr>#}
+{#            <th class="th-lg">Alt Menü</th>#}
+{#            <th class="th-lg">İşlemler</th>#}
+{#        </tr>#}
+{#        </thead>#}
+{#        <!--Table head-->#}
+{##}
+{#        <!--Table body-->#}
+{#        {% for deger in alt %}#}
+{##}
+{#            <tbody>#}
+{#            <tr>#}
+{#                <td>{{ deger.menu_isim }}</td>#}
+{#                <td>#}
+{#                    <button id="alt_menu_delete_{{ deger.id }}" type="button"#}
+{#                            class="btn btn-danger btn-sm alt_delete_button">#}
+{#                        <i class="fa fa-trash"></i>#}
+{#                    </button>#}
+{#                    <button id="alt_duzenle_{{ deger.id }}" data-toggle="modal"#}
+{#                            data-target="#alt_Modal" type="button"#}
+{#                            class="btn btn-warning btn-sm alt_edit_button">#}
+{#                        <i class="fa fa-edit"></i>#}
+{#                    </button>#}
+{#                </td>#}
+{#            </tr>#}
+{#            </tbody>#}
+{#            <!--Table body-->#}
+{#        {% endfor %}#}
+{##}
+{#    </table>#}
+
+     <div style="margin-left: 150px;" class="col-md-8">
+    <table style="text-align: center" id="dt_alt_menuExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+        <thead>
+        <tr>
+            <th style="text-align: center" class="th-lg">Üst Menü</th>
+            <th style="text-align: center"  class="th-lg">Alt Menü</th>
+            <th style="text-align: center;width: 100px"  class="th-lg">İşlemler</th>
+        </tr>
+        </thead>
+    </table>
+    </div>
+
+
+
+    <div>
+        <div class="modal fade" id="alt_Modal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Alt Menü Düzenle</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <p for="exampleInputEmail1"><b>Üst Menü</b></p>
+
+                                <select id="sec_ust_edit" title="Üst Menü" class="selectpicker"
+                                        style="width: 468px;height: 30px;margin-bottom: 10px">
+                                    {% for deger in ust %}
+                                        <option value="{{ deger.id }}">{{ deger.isim }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="exampleInputEmail1">Adı</label>
+                                <input type="text" class="form-control" id="alt_menu_example">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" type="button"
+                                class="btn btn-outline-primary btn-rounded waves-effect">
+                            Kapat
+                        </button>
+                        <button id="alt_edit_save" type="button"
+                                class="btn btn-outline-success btn-rounded waves-effect">
+                            Düzenle
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div>
+        <div class="modal fade" id="alt_menu_Modal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Alt Menü Ekle</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                    </div>
+                    <div class="modal-body">
+                        <p for="exampleInputEmail1"><b>Üst Menü</b></p>
+
+                        <select id="sec_ust" title="Üst Menü" class="selectpicker"
+                                style="width: 468px;height: 30px;margin-bottom: 10px">
+                            {% for deger in ust %}
+                                <option value="{{ deger.id }}">{{ deger.isim }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <form>
+                            <div class="form-group">
+                                <label>Adı</label>
+                                <input type="text" class="form-control" id="alt_example">
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" type="button"
+                                class="btn btn-outline-primary btn-rounded waves-effect">
+                            Kapat
+                        </button>
+                        <button id="alt_save" type="button" class="btn btn-outline-success btn-rounded waves-effect">
+                            Kaydet
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div>
+    </div>
+
+{% endblock %}
+
+{% block scriptBlock %}
+    <script type="text/javascript" rel="script" src="{% static 'bootstrap/js/alt_menu.js' %}"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+     $(document).ready(function () {
+         alt_menu_handler.init();
+     })
+    </script>
+{% endblock %}

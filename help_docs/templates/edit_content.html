@@ -1,0 +1,115 @@
+{% extends 'edit_base.html' %}
+{% block menu %}
+    {% load static %}
+    <h4 style="margin: 20px 20px 20px 20px">Doküman Düzenle</h4>
+
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <select style="margin-left: 10px;height: 30px;" id="ust_menu_select"
+                        class="selectpicker form-control target">
+                    {% for deger in response %}
+                        <option value="{{ deger.id }}" {% if ust == deger.id %}selected{% endif %}>{{ deger }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="form-group">
+                <select style="margin-left: 10px;height: 30px" class="selectpicker form-control" id="select_alt_edit">
+                    {#                {% for deger in alt %}#}
+                    {#                <option value="{{ deger.id }}">{{ deger.menu_isim }}</option>#}
+                    {#                {% endfor %}#}
+                </select>
+            </div>
+        </div>
+    </div>
+    <textarea name="content" class="editor" id="icerik_editor"></textarea>
+
+    <div style="margin-top: 20px">
+        <button id="content_edit" type="button" class="btn btn-outline-success btn-rounded waves-effect pull-right">
+            Kaydet
+        </button>
+        <button onclick="javascript:history.back()" type="button"
+                class="btn btn-outline-primary waves-effect pull-right">Geri
+        </button>
+
+
+    </div>
+
+{% endblock %}
+
+{% block scriptBlock %}
+    {#<script type="text/javascript" rel="script" src="{% static 'bootstrap/js/new_content.js' %}"></script>#}
+    <script>
+        $(document).ready(function () {
+
+            function get_alt_menu() {
+                var id = $("#ust_menu_select option:selected").val();
+                $.post({
+                    url: '/menu_filter',
+                    data: {'id': id},
+                    success: function (response) {
+                        console.log(response)
+                        $('#select_alt_edit').show();
+                        $("#select_alt_edit").html("");
+                        if (response == '') {
+                            $('#select_alt_edit').hide();
+                        } else {
+                            $.each(response, function (index, opt) {
+                                var selected = ('{{ alt }}' == opt.id ? 'selected': 'test')
+                                $("#select_alt_edit").append('<option value="' + opt.id + '" '+ selected +'>' + opt.name + '</option>')
+                            })
+                        }
+                    },
+                    error: function () {
+                        alert('Beklenmedik bir hata oluştu.')
+                    }
+                })
+            }
+
+            var id = '{{ id }}';
+            var editor = CKEDITOR.replace('content');
+            $.post({url: '/show_content/' + id}).done(function (data) {
+                $('#ust_menu_select').val(data.ust_menu);
+                get_alt_menu();
+                $("#ust_menu_select").change(function () {
+                    get_alt_menu();
+                });
+                setTimeout(function () {
+                    editor.setData(data.content);
+                }, 500);
+            });
+
+            $("#content_edit").click(function () {
+                var ust_id = $("#ust_menu_select").val();
+                var edit_editor = editor.getData();
+                var alt_id = $("#select_alt_edit").val();
+                $.ajax({
+                    url: '/edit_icerik',
+                    data: {'ust_id': ust_id, 'editor': edit_editor, 'alt_id': alt_id, 'id': id},
+                    type: 'POST',
+                    success: function (response) {
+                        if (response.status) {
+                            swal({
+                                position: 'top-right',
+                                type: 'success',
+                                title: 'Kayıt başarılı bir şekilde oluşturuldu.',
+                                showConfirmButton: false
+                            });
+                            setTimeout(function () {
+                                location.href = "/content_list";
+                            }, 500)
+
+                        } else
+                            alert('Beklenmedik bir hata oluştu.');
+                    },
+                    error: function () {
+                        alert('Beklenmedik bir hata oluştu.')
+                    }
+                })
+            })
+
+        })
+    </script>
+{% endblock %}

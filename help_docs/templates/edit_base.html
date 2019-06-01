@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>N2 Mobil Araç Takip Sistemleri A.Ş.</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+          integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="{% static 'bootstrap/base.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+
+<!-- Material Design Bootstrap -->
+
+    <!-- Font Awesome JS -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.all.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+            integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+            crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+            integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+            crossorigin="anonymous"></script>
+
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous"></script>
+{#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">#}
+{#    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>#}
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.11.4/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.11.4/adapters/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.11.4/config.js"></script>
+
+
+    <script type="text/javascript" rel="script" src="{% static 'bootstrap/js/modal.js' %}"></script>
+
+</head>
+<body>
+<nav class="navbar navbar-expand-sm"
+     style="width: 100%;position: fixed;z-index: 1000;background-color: #413a8c;color: black;height: 50px;white-space: nowrap;border-radius: 0px !important;">
+     <img src="/media/mobil.png" style="width: 80px;height: 30px;margin-right:10px;"/>
+    <a class="navbar-brand" href="{% url 'anasayfa' %}" style="font-size: 16px;color: white;">N2 Mobil Araç Takip
+        Sistemleri A.Ş.</a>
+    <button onclick="javascript:history.back()" style="margin-left: 850px;margin-right: 10px;" type="button"
+            class="btn btn-outline-primary waves-effect"><i style="margin-right: 3px" class="fas fa-chevron-left"></i>Geri
+    </button>
+</nav>
+<div class="page-wrapper chiller-theme toggled">
+    <a style="margin-top: 50px" id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
+    <nav style="margin-top: 50px" id="sidebar" class="sidebar-wrapper">
+        <div class="sidebar-content">
+            <div class="sidebar-brand">
+                <a href="{% url 'content_list' %}">Menü</a>
+                <div id="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+
+             {% if perms.help_docs.view_content_list %}
+            <li>
+                <a href="{% url 'content_list' %}"><i class="fas fa-book-open"></i> İçerik </a>
+            </li>
+            {% endif %}
+             {% if perms.help_docs.view_ust_menu_olustur %}
+            <li>
+                <a id="ust_menu" href="{% url 'ust_menu_olustur' %}"><i class="fas fa-angle-double-up"></i> Üst Menü</a>
+            </li>
+            {% endif %}
+             {% if perms.help_docs.view_alt_menu_olustur %}
+            <li>
+                <a id="alt_menu" href="{% url 'alt_menu_olustur' %}"><i class="fas fa-angle-double-down"></i> Alt Menü</a>
+            </li>
+        {% endif %}
+           {% if perms.help_docs.view_image_gallery %}
+                <li>
+                    <a id="alt_menu" href="{% url 'image_gallery' %}"><i class="fas fa-camera-retro"></i> Galeri</a>
+                </li>
+            {% endif %}
+        </ul>
+            </div>
+        </div>
+
+    </nav>
+</div>
+        <div  style="margin-top: -650px;margin-left: 250px;" class="container">
+            <div class="row">
+                <div style="margin-left: 50px;margin-top: 70px;margin-bottom: 50px" class="col-lg-11">
+                    <div>
+                        {% block menu %}
+                        {% endblock %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+</body>
+{% block scriptBlock %}
+
+{% endblock %}
+</html>
+<script>
+    jQuery(function ($) {
+        $("#close_sidebar").hide();
+        $(".sidebar-dropdown > a").click(function () {
+            $(".sidebar-submenu").slideUp(200);
+            if (
+                $(this)
+                    .parent()
+                    .hasClass("active")
+            ) {
+                $(".sidebar-dropdown").removeClass("active");
+                $(this)
+                    .parent()
+                    .removeClass("active");
+            } else {
+                $(".sidebar-dropdown").removeClass("active");
+                $(this)
+                    .next(".sidebar-submenu")
+                    .slideDown(200);
+                $(this)
+                    .parent()
+                    .addClass("active");
+            }
+        });
+
+        $("#close-sidebar").click(function () {
+            $(".page-wrapper").removeClass("toggled");
+            $(".container").css("margin-left","100px");
+        });
+        $("#show-sidebar").click(function () {
+            $(".page-wrapper").addClass("toggled");
+            $(".container").css("margin-left","250px");
+        });
+
+
+    });
+</script>
+

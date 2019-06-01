@@ -1,0 +1,44 @@
+{% extends 'edit_base.html' %}
+{% block menu %}
+    {% load static %}
+<h4 style="margin: 20px 20px 20px 20px">Doküman Ekle </h4>
+
+<div class="row">
+    <div class="col-sm-4">
+        <div class="form-group">
+            <select style="margin-left: 10px;height: 30px;" class="selectpicker form-control target">
+                {% for deger in ust %}
+                <option value="{{ deger.id }}">{{ deger.isim }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <select style="margin-left: 10px;height: 30px" class="selectpicker form-control" id="select_alt">
+{#                {% for deger in alt %}#}
+{#                <option value="{{ deger.id }}">{{ deger.menu_isim }}</option>#}
+{#                {% endfor %}#}
+            </select>
+        </div>
+    </div>
+</div>
+ <textarea cols="10" id="editor2" name="editor2" rows="10" data-sample-short></textarea>
+
+<div style="margin-top: 20px">
+     <button id="icerik_save" type="button" class="btn btn-outline-success btn-rounded waves-effect pull-right">
+                            Kaydet
+     </button>
+                         <button onclick="javascript:history.back()" type="button"
+            class="btn btn-outline-primary waves-effect pull-right">Geri
+    </button>
+
+
+</div>
+
+{% endblock %}
+
+{% block scriptBlock %}
+<script type="text/javascript" rel="script" src="{% static 'bootstrap/js/new_content.js' %}"></script>
+
+{% endblock %}

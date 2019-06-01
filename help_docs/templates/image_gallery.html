@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <style>
+        body {
+            background-color: #e4edf3 !important;
+            font-family: "Asap", sans-serif;
+            color: #989898;
+            margin: 10px;
+            font-size: 16px;
+        }
+
+        #demo {
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+
+        .green {
+            background-color: #6fb936;
+        }
+
+        .thumb {
+            margin-bottom: 30px;
+        }
+
+        .page-top {
+            margin-top: 85px;
+        }
+
+
+        img.zoom {
+            width: 100%;
+            height: 200px;
+            border-radius: 5px;
+            object-fit: cover;
+            -webkit-transition: all .3s ease-in-out;
+            -moz-transition: all .3s ease-in-out;
+            -o-transition: all .3s ease-in-out;
+            -ms-transition: all .3s ease-in-out;
+        }
+
+
+        .transition {
+            -webkit-transform: scale(1.2);
+            -moz-transform: scale(1.2);
+            -o-transform: scale(1.2);
+            transform: scale(1.2);
+        }
+
+        .modal-header {
+
+            border-bottom: none;
+        }
+
+        .modal-title {
+            color: #000;
+        }
+
+        .modal-footer {
+            display: none;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.33.1/sweetalert2.all.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!------ Include the above in your HEAD tag ---------->
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
+          media="screen">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm"
+     style="background-color: #413a8c;color: black;height: 50px;white-space: nowrap;border-radius: 0px !important;">
+    <a class="navbar-brand" href="{% url 'anasayfa' %}" style="font-size: 16px;color: white;">N2 Mobil Araç Takip
+        Sistemleri A.Ş.</a>
+    <button onclick="javascript:history.back()" style="margin-left: 950px;margin-right: 10px;" type="button"
+            class="btn btn-outline-primary waves-effect">Geri
+    </button>
+</nav>
+<div style="margin-top: 30px" class="container page-top">
+
+    <div class="row">
+        {% for img in image %}
+            <div class="card" style="width: 18rem;margin:10px">
+                <div class="card-body">
+                    <p class="card-text"><img src="{{ img.document.url }}"
+                                              class="zoom img-fluid "
+                                              style="margin-top: 25px;width: 400px;height: 150px;" alt=""></p>
+                    <button style="border-radius: 50px;" class="btn btn-outline-secondary pull-right"><img
+                            style="width: 25px;"
+                            class="fancybox pull-right"
+                            href="{{ img.document.url }}"
+                            src="../media/search.png"/></a>
+                    </button>
+                    <button style="margin-right: 5px;border-radius: 50px;" class="btn btn-outline-secondary pull-right">
+                        <img style="width: 25px;" id="menu_delete_{{ img.id }}" class="close pull-right"
+                             src="../media/trash.png"/></a>
+                    </button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+
+</html>
+
+<script>
+    $(document).ready(function () {
+        $(".fancybox").fancybox({
+            openEffect: "none",
+            closeEffect: "none"
+        });
+
+        $(".zoom").hover(function () {
+
+            $(this).addClass('transition');
+        }, function () {
+
+            $(this).removeClass('transition');
+        });
+        $('.close').click(function () {
+            var id = $(this).attr('id');
+            var deger_id = id.split("_");
+            var alinan_id = deger_id[2];
+            swal({
+                title: 'Emin misiniz?',
+                text: "Veri silinecektir!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sil',
+                cancelButtonText: 'İptal'
+            }).then(function (result) {
+                if (result.value) {
+                    $.ajax({
+                        url: 'delete_image',
+                        data: {'id': alinan_id},
+                        type: 'POST',
+                        success: function (message) {
+                            if (message) {
+                                swal(
+                                    'Tebrikler!',
+                                    'Kayıt başarıyla silindi.',
+                                    'success'
+                                );
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 500)
+                            } else
+                                alert('Beklenmedik bir hata oluştu!')
+                        },
+                        error: function () {
+                            alert('Beklenmedik bir hata oluştu!')
+                        }
+                    })
+                }
+            })
+        })
+
+    });
+
+</script>

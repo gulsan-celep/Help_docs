@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+          content="Responsive sidebar template with sliding effect and dropdown menu based on bootstrap 3">
+    <title>Sidebar template</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'bootstrap/base.css' %}">
+
+</head>
+
+<body>
+<nav class="navbar navbar-expand-sm"
+     style="background-color: #413a8c;color: white;height: 50px;white-space: nowrap;position: fixed;width: 100%">
+    <img src="/media/mobil.png" style="width: 80px;height: 30px;margin-right:10px;"/>
+    <a class="navbar-brand" href="#" style="font-size: 16px">N2 Mobil Araç Takip Sistemleri A.Ş.</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+        {% if user.is_active %}
+            <button style="color:black;margin-right: 20px;height: 35px"
+                    onclick="location.href = '{% url 'content_list' %}';"
+                    type="button" class="btn btn-outline-primary waves-effect"><i class="fas fa-plus"></i> Yönetim
+            </button>
+            <button style="color:black;margin-right: 20px;height: 35px"
+                    onclick="location.href = '{% url 'user_logout' %}';"
+                    type="button" class="btn btn-outline-primary waves-effect"><i class="fas fa-sign-out-alt"></i> Çıkış
+                Yap
+            </button>
+        {% endif %}
+        <div class="input-group md-form form-sm form-1 pl-0" style="width: 250px">
+            <div class="input-group-prepend">
+
+            </div>
+            <form id="searchForm">
+                <div class="input-group">
+                    {#                    <button style="margin-right: 3px;color: black" id="go" class="btn btn-primary" type="button">Ara#}
+                    {#                    </button>#}
+                    {#                    <input type="text" id="searchItem" class="form-control" placeholder="Ara">#}
+                    <input type="search" class="form-control input-sm" placeholder="Ara">
+                    <button class="btn btn-sm btn-info" data-search="next" id="next" type="button"><i class="fas fa-arrow-down"></i></button>
+                    <button class="btn btn-sm btn-danger" data-search="prev" id="prev" type="button"><i class="fas fa-arrow-up"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="page-wrapper chiller-theme toggled">
+    <a style="margin-top: 50px" id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+        <i class="fas fa-bars"></i>
+    </a>
+    <nav style="margin-top: 50px" id="sidebar" class="sidebar-wrapper">
+        <div class="sidebar-content">
+            <div class="sidebar-brand">
+                <a href="#">Menü</a>
+                <div id="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li class="active">
+                        <a href="#my-unique-id-in-this-page"><i class="fas fa-home"></i> Anasayfa</a>
+                    </li>
+                    {% for deger in response %}
+                        <li class="{% if deger.alt_menu %}sidebar-dropdown{% endif %}">
+                            <a href="#{{ deger.id }}_ust">
+                                <i class="fa fa-tachometer-alt"></i>
+                                <span>{{ deger.name }}</span>
+                            </a>
+                            <div class="sidebar-submenu">
+                                {% for alt_menu in deger.alt_menu %}
+                                    <ul id="{{ deger.name }}">
+                                        <li>
+                                            <a href="#{{ alt_menu.id }}_alt">{{ alt_menu.name }}
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                {% endfor %}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <!-- sidebar-menu  -->
+        </div>
+
+    </nav>
+
+</div>
+
+<div id="open_sidebar_icerik" style="width: 1000px;margin-top: -600px;margin-left: 350px">
+
+    <p>
+    <h1 style="color:red;text-align:center;"><b id="my-unique-id-in-this-page">Araç Takip Sistemleri</b></h1>
+
+    <p style="color:red;text-align:center;">Genel Bilgiler</p>
+    <p>Site Hakkında</p>
+    <p>Bu websitesi N2mobil Takip Sistemleri A.Ş’nin Türk mühendisleri tarafından geliştirilmiştir.
+        Site hakkındaki değerli görüş ve yorumlarınızı paylaşmak için
+        <a href="https://n2mobil.com.tr/iletisim/"
+           style="color: blue;" target="_blank">adresimizi</a> ziyaret
+        edebilirsiniz.
+    </p>
+
+    <p>Uyarı!</p>
+    <p>Bu web sitesi N2mobil Takip Sistemleri A.Ş tarafından geliştirilmiş olup tüm hakları saklıdır. Verilerin
+        izinsiz kullanımı, dağıtımı ve kötü niyetli işler için kullanılması durumlarında N2mobil Takip Sistemleri
+        A.Ş. adli ve hukuki işlemleri başlatma hakkına sahiptir.
+        <a href="https://n2mobil.com.tr/iletisim/" target="_blank"   style="color: blue;">Bizimle iletişime geçin</a></p>
+
+    </p>
+
+    {% for content in contents %}
+        <div class="icerik"
+             id="{% if content.alt_menu %}{{ content.alt_menu.id }}_alt{% else %}{{ content.ust_menu.id }}_ust{% endif %}">
+            <p>{{ content.content |safe }}</p>
+        </div>
+    {% endfor %}
+</div>
+<div id="close_sidebar_icerik" style="margin-top: -600px;margin-left: 150px">
+
+    <p>
+    <h1 style="color:red;text-align:center;"><b id="my-unique-id-in-this-page">Araç Takip Sistemleri</b></h1>
+
+    <p style="color:red;text-align:center;">Genel Bilgiler</p>
+    <p>Site Hakkında</p>
+    <p>Bu websitesi N2mobil Takip Sistemleri A.Ş’nin Türk mühendisleri tarafından geliştirilmiştir.
+        Site hakkındaki değerli görüş ve yorumlarınızı paylaşmak için <a href="https://n2mobil.com.tr/iletisim/"
+                                                                         style="color: blue;">adresimizi</a> ziyaret
+        edebilirsiniz.
+    </p>
+
+    <p>Uyarı!</p>
+    <p>Bu web sitesi N2mobil Takip Sistemleri A.Ş tarafından geliştirilmiş olup tüm hakları saklıdır. Verilerin
+        izinsiz kullanımı, dağıtımı ve kötü niyetli işler için kullanılması durumlarında N2mobil Takip Sistemleri
+        A.Ş. adli ve hukuki işlemleri başlatma hakkına sahiptir.
+        <a href="https://n2mobil.com.tr/iletisim/" style="color: blue;">Bizimle iletişime geçin</a></p>
+
+    </p>
+
+    {% for content in contents %}
+        <div class="icerik"
+             id="{% if content.alt_menu %}{{ content.alt_menu.id }}_alt
+                 {% else %}{{ content.ust_menu.id }}_ust{% endif %}">
+            <p>{{ content.content |safe }}</p>
+        </div>
+    {% endfor %}
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js"></script>
+
+</body>
+
+</html>
+<script>
+    jQuery(function ($) {
+        $("#close_sidebar_icerik").hide();
+        $(".sidebar-dropdown > a").click(function () {
+            $(".sidebar-submenu").slideUp(200);
+            if (
+                $(this)
+                    .parent()
+                    .hasClass("active")
+            ) {
+                $(".sidebar-dropdown").removeClass("active");
+                $(this)
+                    .parent()
+                    .removeClass("active");
+            } else {
+                $(".sidebar-dropdown").removeClass("active");
+                $(this)
+                    .next(".sidebar-submenu")
+                    .slideDown(200);
+                $(this)
+                    .parent()
+                    .addClass("active");
+            }
+        });
+
+        $("#close-sidebar").click(function () {
+            $(".page-wrapper").removeClass("toggled");
+            $('#close_sidebar_icerik').toggle();
+            $('#open_sidebar_icerik').toggle();
+            if ($('#open_sidebar_icerik').is(':visible')) {
+                $(this).val('Hide');
+                $('#close_sidebar_icerik').val('Show');
+            }
+        });
+        $("#show-sidebar").click(function () {
+            $(".page-wrapper").addClass("toggled");
+            $('#close_sidebar_icerik').toggle();
+            $('#open_sidebar_icerik').toggle();
+
+            if ($('#close_sidebar_icerik').is(':visible')) {
+                $(this).val('Hide');
+                $('#open_sidebar_icerik').val('Show');
+            }
+        });
+
+
+    });
+
+    (function () {
+
+        // the input field
+        var $input = $("input[type='search']"),
+            // prev button
+            $prevBtn = $("button[data-search='prev']"),
+            // next button
+            $nextBtn = $("button[data-search='next']"),
+            // the context where to search
+            $icerik = $(".icerik"),
+            // jQuery object to save <mark> elements
+            $results,
+            // the class that will be appended to the current
+            // focused element
+            currentClass = "current",
+            // top offset for the jump (the search bar)
+            offsetTop = 50,
+            // the current index of the focused element
+            currentIndex = 0;
+
+        /**
+         * Jumps to the element matching the currentIndex
+         */
+        function jumpTo() {
+            if ($results.length) {
+                var position,
+                    $current = $results.eq(currentIndex);
+                $results.removeClass(currentClass);
+                if ($current.length) {
+                    $current.addClass(currentClass);
+                    position = $current.offset().top - offsetTop;
+
+                    window.scrollTo(0, position);
+                }
+            }
+        }
+
+        /**
+         * Searches for the entered keyword in the
+         * specified context on input
+         */
+        $input.on("input", function () {
+            var searchVal = this.value;
+            $icerik.unmark({
+                done: function () {
+                    $icerik.mark(searchVal, {
+                        separateWordSearch: true,
+                        done: function () {
+                            $results = $icerik.find("mark");
+                            currentIndex = 0;
+                            jumpTo();
+                        }
+                    });
+                }
+            });
+        });
+
+        $('#searchForm').on('submit', function () {
+            if ($results.length) {
+                currentIndex += $(this).is($prevBtn) ? -1 : 1;
+                if (currentIndex < 0) {
+                    currentIndex = $results.length - 1;
+                }
+                if (currentIndex > $results.length - 1) {
+                    currentIndex = 0;
+                }
+                jumpTo();
+            }
+        });
+
+        $nextBtn.add($prevBtn).on("click", function () {
+            if ($results.length) {
+                currentIndex += $(this).is($prevBtn) ? -1 : 1;
+                if (currentIndex < 0) {
+                    currentIndex = $results.length - 1;
+                }
+                if (currentIndex > $results.length - 1) {
+                    currentIndex = 0;
+                }
+                jumpTo();
+            }
+        });
+    })();
+</script>
