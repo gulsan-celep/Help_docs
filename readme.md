@@ -18,8 +18,8 @@ Diyelim ki bir tane web siteniz var ve kullanıcılar nasıl kullanacaklarını,
 - Oluşturduğunuz bütün içerikler veri tabanına kaydedilir ve kaydettiğiniz sıraya göre müşterinin görebileceği sayfada yerini alır.
 - Yönetim sayfasında oluşturduğunuz bütün içerikleri Datatable ile listeledim.
 - Müşterilerin arama yapabileceği search bölümü yaptım. Girdikleri içeriği ileri geri butonlarıyla hangi bölümlerde geçtiğini görebilir.
-##Geliştirme Ortamı
+## Geliştirme Ortamı
 PyCharm/Postgresql/Html/Css/Bootstrap/Javascript/jQuery
-##Dil
+## Dil
 Python Django
 
